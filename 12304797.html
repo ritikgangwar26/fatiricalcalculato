@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorial Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .calculator {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #e8f4fc;
+            display: none;
+        }
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .explanation {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Factorial Calculator</h1>
+        
+        <div class="input-group">
+            <label for="numberInput">Enter a positive integer:</label>
+            <input type="number" id="numberInput" min="0" placeholder="Enter a number">
+        </div>
+        
+        <button id="calculateBtn">Calculate Factorial</button>
+        
+        <div id="result"></div>
+        <div id="error" class="error"></div>
+        
+        <div class="explanation">
+            <p><strong>Note:</strong> The factorial of a non-negative integer n is the product of all positive integers less than or equal to n. It's denoted as n!. For example, 5! = 5 × 4 × 3 × 2 × 1 = 120.</p>
+        </div>
+    </div>
+
+    <script>
+        function factorial(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            
+            // Using BigInt for very large numbers
+            let result = 1n;
+            for (let i = 2n; i <= BigInt(n); i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const input = document.getElementById('numberInput');
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            
+            // Clear previous results
+            resultDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            const num = parseInt(input.value);
+            
+            if (isNaN(num)) {
+                errorDiv.textContent = 'Please enter a valid number.';
+                return;
+            }
+            
+            if (num < 0) {
+                errorDiv.textContent = 'Factorial is not defined for negative numbers.';
+                return;
+            }
+            
+            // Calculate factorial
+            const fact = factorial(num);
+            
+            // Display result
+            resultDiv.textContent = `Factorial of ${num} (${num}!) = ${fact.toLocaleString()}`;
+            resultDiv.style.display = 'block';
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Allow pressing Enter key to calculate
+        document.getElementById('numberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
